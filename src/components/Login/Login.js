@@ -1,28 +1,15 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { MainContext } from '../../mainContext'
-import io from 'socket.io-client'
 
-let socket
 
 const Login = () => {
     const history = useHistory()
     const { name, room, setName, setRoom } = useContext(MainContext)
-    const ENDPOINT = 'http://localhost:5000'
-    socket = io(ENDPOINT, { transports: ['websocket', 'polling'] })
-
-    //Useffect to avoid user from loggin out
-    useEffect(() => { if (name) { history.push('/chat') } }, [])
 
     const handleClick = () => {
         setName(name); setRoom(room);
-        socket.emit("login", { name, room }, (error) => {
-            if (error) {
-                console.log(error);
-            } else {
-                history.push('/chat')
-            }
-        })
+        history.push('/chat')
     }
 
     return (

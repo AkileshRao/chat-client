@@ -3,36 +3,37 @@ import { useHistory } from 'react-router-dom'
 import { MainContext } from '../../mainContext'
 import io from 'socket.io-client'
 
-let socket
+let socket;
+const ENDPOINT = 'http://localhost:5000';
 
 const Chat = () => {
     const { name, room } = useContext(MainContext)
     const [message, setMessage] = useState('')
     const [messages, setMessages] = useState([])
     const history = useHistory()
-    const ENDPOINT = 'http://localhost:5000'
-    socket = io(ENDPOINT, { transports: ['websocket', 'polling'] })
-
-    //Useeffect to redirect to login if user does no exist
-    useEffect(() => { if (!name) history.push('/') }, [])
 
     useEffect(() => {
-        console.log("not working");
-        console.log(room, name);
-        socket.on("message", msg => {
-            setMessages([...messages, msg])
-            console.log("okay bri");
+        if (!name) {
+            return history.push('/')
+        }
+        socket = io(ENDPOINT, { transports: ['websocket', 'polling'] })
+
+        socket.emit('login', { name, room }, error => {
+            if (error) console.log(error);
         })
 
         socket.on("notification", notif => {
-            console.log("Hey man");
             console.log(notif);
-            setMessages([...messages, notif])
         })
+
+        socket.on("message", msg => {
+            console.log(msg);
+            setMessages([...messages, msg])
+        })
+
     }, [])
 
     const handleSendMessage = () => {
-        // console.log(messages, message);
         socket.emit('sendMessage', message, () => setMessage(''))
     }
 
@@ -40,7 +41,7 @@ const Chat = () => {
         <div>
             <div>
                 {messages.map((msg, i) =>
-                    (<p key={i}>{msg} by {name}</p>)
+                    (<p key={i}>{msg.text} by {msg.user}</p>)
                 )}
             </div>
             <input type="text" placeholder='Enter Message' value={message} onChange={e => setMessage(e.target.value)} />
