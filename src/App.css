@@ -3,5 +3,9 @@
 .App{
     font-family: 'DM Sans';
     height: 100vh;
-    background: #E0E3EE;
+    background: #D0E0EF;
+}
+
+*{
+    outline: none !important;
 }

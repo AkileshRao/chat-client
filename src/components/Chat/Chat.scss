@@ -1,0 +1,51 @@
+.room{
+    box-shadow: 1px 1px 10px rgba(0,0,0,.1);
+    border-radius: 5px;
+    .heading{
+        font-family: 'DM Sans';
+        letter-spacing: -2px;
+    }
+
+    .messages{
+        background:#EAEAEA;
+        .message{
+            .msg{
+                color: rgba(0,0,0,.7);
+            }
+        }
+        .my-message{
+            align-self: flex-end;
+            .msg{
+                color: white;
+                background: #408EEA;
+            }
+        }
+
+    }
+
+    .messages > div{
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        width: auto !important;
+        overflow:auto;
+        min-height:400px;
+        max-height:400px;
+        padding: 1rem;
+
+    }
+    
+    .form{
+        position: relative;
+        input{
+            width: 100%;
+            padding: 1.5rem 1rem;
+            border-radius: 0px 0px 10px 10px;
+        }
+        button{
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+        }
+    }
+}
