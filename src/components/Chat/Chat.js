@@ -22,7 +22,7 @@ const Chat = () => {
 
     window.onpopstate = e => logout()
     //Checks to see if there's a user present
-    useEffect(() => { if (!name) return history.push('/') }, [])
+    useEffect(() => { if (!name) return history.push('/') }, [history, name])
 
 
     useEffect(() => {
@@ -40,7 +40,7 @@ const Chat = () => {
                 isClosable: true,
             })
         })
-    }, [])
+    }, [socket, toast])
 
 
     const handleSendMessage = () => {
