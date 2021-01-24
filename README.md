@@ -1,5 +1,6 @@
 # Frontend for chat application using socket.io
 
+(./img.png)
 You can test the live app [here](https://chattrio.netlify.app/). 
 The back end for this application can be found [here](https://github.com/AkileshAro/chat-server/).
 
