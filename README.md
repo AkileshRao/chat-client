@@ -3,14 +3,14 @@
 You can test the live app [here](https://chattrio.netlify.app/). 
 The back end for this application can be found [here](https://github.com/AkileshAro/chat-server/).
 
-##Libraries Used : 
+## Libraries Used : 
 - ReactJS
 - Chakra UI
 - React scroll to bottom
 - React Icons
 - Socket IO Client
 
-##Installation Process :
+## Installation Process :
 1. Clone/Download the project.
 2. Open the project directory on your machine using terminal or a code editor of your choice and type `npm i`
 3. Open up the file called **socketContext.js**. Change **ENDPOINT** to **localhost:5000** and you're good to go.
