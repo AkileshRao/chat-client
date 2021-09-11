@@ -17,10 +17,29 @@ const Login = () => {
     //Checks to see if there's a user already present
 
     useEffect(() => {
-        socket.on("users", users => {
+        const sUListener = users => {
             setUsers(users)
-        })
-    })
+        }
+        socket.on("users", sUListener)
+        return () => {
+            //Unsubscribe on unmount:
+            socket.off("users", sUListener)
+        }
+    }, [])
+
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search)
+
+        if(!!queryParams.has('room')) {
+          const openRoomName = queryParams.get('room')
+
+          setRoom(openRoomName)
+          setIsRoomDisabled(true)
+    
+          queryParams.delete('room')
+          history.replace({ search: queryParams.toString() })
+        }
+      }, [location.search, history])
 
     //Emits the login event and if successful redirects to chat and saves user data
     const handleClick = () => {
