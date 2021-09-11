@@ -13,14 +13,35 @@ const Login = () => {
     const history = useHistory()
     const toast = useToast()
     const { setUsers } = useContext(UsersContext)
+    const location = useLocation()
+    const [isRoomDisabled, setIsRoomDisabled] = useState(false)
 
     //Checks to see if there's a user already present
 
     useEffect(() => {
-        socket.on("users", users => {
+        const sUListener = users => {
             setUsers(users)
-        })
-    })
+        }
+        socket.on("users", sUListener)
+        return () => {
+            //Unsubscribe on unmount:
+            socket.off("users", sUListener)
+        }
+    }, [])
+
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search)
+
+        if(!!queryParams.has('room')) {
+          const openRoomName = queryParams.get('room')
+
+          setRoom(openRoomName)
+          setIsRoomDisabled(true)
+    
+          queryParams.delete('room')
+          history.replace({ search: queryParams.toString() })
+        }
+      }, [location.search, history])
 
     //Emits the login event and if successful redirects to chat and saves user data
     const handleClick = () => {
@@ -53,7 +74,7 @@ const Login = () => {
             <Heading as="h1" size="4xl" textAlign='center' mb='8' fontFamily='DM Sans' fontWeight='600' letterSpacing='-2px'>Chattr.io</Heading>
             <Flex className="form" gap='1rem' flexDirection={{ base: "column", md: "row" }}>
                 <Input variant='filled' mr={{ base: "0", md: "4" }} mb={{ base: "4", md: "0" }} type="text" placeholder='User Name' value={name} onChange={e => setName(e.target.value)} />
-                <Input variant='filled' mr={{ base: "0", md: "4" }} mb={{ base: "4", md: "0" }} type="text" placeholder='Room Name' value={room} onChange={e => setRoom(e.target.value)} />
+                <Input disabled={isRoomDisabled} variant='filled' mr={{ base: "0", md: "4" }} mb={{ base: "4", md: "0" }} type="text" placeholder='Room Name' value={room} onChange={e => setRoom(e.target.value)} />
                 <IconButton colorScheme='blue' isRound='true' icon={<RiArrowRightLine />} onClick={handleClick}></IconButton>
             </Flex>
         </Flex>

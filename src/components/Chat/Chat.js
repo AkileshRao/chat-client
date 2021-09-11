@@ -47,6 +47,15 @@ const Chat = () => {
         socket.emit('sendMessage', message, () => setMessage(''))
         setMessage('')
     }
+    const handleKeyDown = (ev) => {
+        //Send on enter:
+        if (ev.keyCode === 13) {
+            if (!!message) handleSendMessage()
+        }
+    }
+    const handleChange = (ev) => {
+        setMessage(ev.target.value)
+    }
 
     const logout = () => {
         setName(''); setRoom('');
@@ -99,7 +108,7 @@ const Chat = () => {
                 }
             </ScrollToBottom>
             <div className='form'>
-                <input type="text" placeholder='Enter Message' value={message} onChange={e => setMessage(e.target.value)} />
+                <input type="text" placeholder='Enter Message' value={message} onChange={handleChange} onKeyDown={handleKeyDown} />
                 <IconButton colorScheme='green' isRound='true' icon={<RiSendPlaneFill />} onClick={handleSendMessage} disabled={message === '' ? true : false}>Send</IconButton>
             </div>
         </Flex>
